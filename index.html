@@ -43,36 +43,25 @@
         .preloader-logo-container {
             width: 140px; height: 140px; position: relative; border-radius: 50%;
             overflow: hidden; border: 4px solid var(--white); box-shadow: 0 4px 0px rgba(0,0,0,0.1);
-            background-color: var(--white); /* Белый фон, чтобы обрезанные края не сливались с небом */
-        }
-
-        /* На мобилке делаем круг прелоадера побольше */
-        @media (max-width: 768px) {
-            .preloader-logo-container { width: 180px; height: 180px; }
+            background-color: var(--white);
         }
 
         .preloader-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('image_ed5c47.jpg'); 
-            background-size: 85%; /* Вписываем логотип внутрь круга (чтобы не обрезались уши) */
-            background-position: center; background-repeat: no-repeat;
+            background-size: 85%; background-position: center; background-repeat: no-repeat;
             filter: grayscale(100%) opacity(0.3);
         }
 
         .preloader-fill {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('image_ed5c47.jpg'); 
-            background-size: 85%; 
-            background-position: center; background-repeat: no-repeat;
-            /* Используем clip-path для ровной заливки снизу вверх */
+            background-size: 85%; background-position: center; background-repeat: no-repeat;
             clip-path: inset(100% 0 0 0);
             animation: fillLogo 2s ease-in-out forwards;
         }
 
-        @keyframes fillLogo { 
-            0% { clip-path: inset(100% 0 0 0); } 
-            100% { clip-path: inset(0 0 0 0); } 
-        }
+        @keyframes fillLogo { 0% { clip-path: inset(100% 0 0 0); } 100% { clip-path: inset(0 0 0 0); } }
 
         /* --- АНИМАЦИЯ ФОНА --- */
         .clouds {
@@ -125,7 +114,6 @@
             backdrop-filter: blur(5px); box-shadow: 0 4px 0px rgba(0,0,0,0.05); text-decoration: none; display: inline-block;
         }
 
-        /* --- МОБИЛЬНЫЙ ЛОГОТИП (СКРЫТ НА ДЕСКТОПЕ) --- */
         .mobile-logo-wrapper { display: none; }
 
         /* --- БЛОК ОБМЕНА --- */
@@ -134,6 +122,19 @@
             width: 100%; max-width: 500px; box-shadow: 0 15px 0px rgba(0, 0, 0, 0.03), 0 20px 40px rgba(0,0,0,0.1);
             border: 4px solid var(--white); position: relative; z-index: 10;
         }
+
+        /* ЭКРАН УСПЕХА */
+        .success-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--white); border-radius: 40px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 20;
+        }
+        .success-overlay.active { opacity: 1; pointer-events: auto; }
+        .success-icon { font-size: 60px; margin-bottom: 20px; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .success-text { font-size: 22px; font-weight: 900; color: var(--text-main); text-align: center; }
+
+        @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 
         .course-badge {
             background: var(--secondary); color: #333; padding: 8px 16px; border-radius: 20px; font-weight: 900;
@@ -183,7 +184,6 @@
         .custom-option:hover { background: #f7f9fc; color: var(--accent); }
         .custom-option.selected { background: var(--bg-sky); color: var(--accent); }
 
-        /* --- СТРЕЛКА ВНИЗ И КНОПКА --- */
         .arrow-down {
             background: var(--accent); width: 56px; height: 56px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
@@ -213,46 +213,31 @@
         /* === АДАПТАЦИЯ ПОД МОБИЛЬНЫЕ УСТРОЙСТВА === */
         /* ========================================= */
         @media (max-width: 768px) {
-            
             header { display: none; } 
+            
+            .preloader-logo-container { width: 180px; height: 180px; }
 
-            /* Центрирование по вертикали на первом экране */
             section#screen-1 { 
-                padding-top: 20px; /* Убрали лишний отступ сверху */
-                padding-bottom: 20px; 
-                justify-content: center; /* Строго центрируем всё содержимое */
+                padding-top: 20px; padding-bottom: 20px; 
+                justify-content: center; 
             }
 
-            /* Контейнер для логотипа и надписи */
             .mobile-logo-wrapper {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-bottom: 25px; /* Отступ от плашки обмена */
-                z-index: 10;
+                display: flex; flex-direction: column; align-items: center;
+                margin-bottom: 25px; z-index: 10;
             }
 
-            /* Уменьшенный логотип (120px) */
             .mobile-logo {
-                display: block; 
-                width: 120px; 
-                height: 120px; 
-                object-fit: contain; 
-                cursor: pointer;
+                display: block; width: 120px; height: 120px; 
+                object-fit: contain; cursor: pointer;
                 filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
             }
 
-            /* Подпись FAT-CAT */
             .mobile-logo-text {
-                font-size: 26px;
-                font-weight: 900;
-                color: var(--white);
-                text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
-                letter-spacing: 1px;
-                margin-top: 5px;
+                font-size: 26px; font-weight: 900; color: var(--white);
+                text-shadow: 2px 2px 0px rgba(0,0,0,0.1); letter-spacing: 1px; margin-top: 5px;
             }
 
-            /* Анимация урчания кота */
             @keyframes purr-vibrate {
                 0%, 100% { transform: translateX(0); }
                 25% { transform: translateX(-2px) translateY(1px); }
@@ -262,6 +247,7 @@
             .purring { animation: purr-vibrate 0.1s linear infinite; }
 
             .exchange-container { padding: 25px; border-radius: 35px; }
+            .success-overlay { border-radius: 35px; }
             .input-group { padding: 15px; border-radius: 20px; }
             input[type="number"], input[type="text"] { font-size: 24px; width: 45%; }
             .custom-select-wrapper { width: 120px; }
@@ -287,39 +273,34 @@
     <div class="clouds"></div>
 
     <header>
-        <!-- Десктопный логотип -->
         <a href="#" class="desktop-brand">
             <img src="image_ed5c47.jpg" alt="FAT-CAT" class="logo-img">
             <div class="logo-text">FAT-CAT</div>
         </a>
-
-        <div class="nav-links" id="nav-links">
+        <div class="nav-links">
             <a href="#" class="nav-link">FAQ</a>
             <a href="#" class="nav-link">Партнерам</a>
             <a href="#" class="nav-link">Отзывы</a>
             <a href="#" class="nav-link">Правила</a>
-            <a href="#" class="feature-tag" style="text-align: center; width: 100%;">Вход</a>
+            <a href="#" class="feature-tag">Вход</a>
         </div>
     </header>
 
     <div class="scroll-container">
         <section id="screen-1">
-            
-            <!-- Мобильный логотип с подписью FAT-CAT -->
             <div class="mobile-logo-wrapper">
                 <img src="image_ed5c47.jpg" alt="FAT-CAT Logo" class="mobile-logo" id="mobile-purr-logo">
                 <div class="mobile-logo-text">FAT-CAT</div>
             </div>
 
             <div class="exchange-container">
-                <div class="course-badge">Курс: 1 USDT = 93.50 RUB</div>
+                <div class="course-badge" id="course-badge">Курс: 1 USDT = 93.50 RUB</div>
 
                 <div class="input-group">
                     <div class="input-header"><span>Вы отдаете (USDT)</span></div>
                     <div class="input-row">
                         <input type="number" value="100" id="give-input">
-                        <!-- КАСТОМНЫЙ СЕЛЕКТ СЕТЕЙ -->
-                        <div class="custom-select-wrapper" id="crypto-select-wrapper">
+                        <div class="custom-select-wrapper">
                             <div class="custom-select">
                                 <span class="custom-select-trigger">TRC-20</span>
                                 <div class="custom-options">
@@ -341,8 +322,7 @@
                     <div class="input-header"><span>Вы получаете (RUB)</span></div>
                     <div class="input-row">
                         <input type="text" value="9350" id="get-input" readonly>
-                        <!-- КАСТОМНЫЙ СЕЛЕКТ БАНКОВ -->
-                        <div class="custom-select-wrapper" id="fiat-select-wrapper">
+                        <div class="custom-select-wrapper">
                             <div class="custom-select">
                                 <span class="custom-select-trigger">Т-Банк</span>
                                 <div class="custom-options">
@@ -357,6 +337,12 @@
                 </div>
 
                 <button class="submit-btn" id="submit-order">Перейти к оплате</button>
+
+                <!-- Экран успешной заявки -->
+                <div class="success-overlay" id="success-overlay">
+                    <div class="success-icon">✅</div>
+                    <div class="success-text">Заявка создана!<br><span style="font-size: 16px; color: #666; font-weight: 700;">Возвращаем в Telegram...</span></div>
+                </div>
             </div>
             <div class="scroll-indicator">Листай вниз 👇</div>
         </section>
@@ -408,19 +394,14 @@
 
         // --- АНИМАЦИЯ ЛОГОТИПА "УРЧАНИЕ" ---
         const mobileLogo = document.getElementById('mobile-purr-logo');
-        mobileLogo.addEventListener('click', function() {
-            if (this.classList.contains('purring')) return; 
-            
-            this.classList.add('purring');
-            
-            if (navigator.vibrate) {
-                navigator.vibrate([50, 50, 50, 50, 50, 50]); 
-            }
-
-            setTimeout(() => {
-                this.classList.remove('purring');
-            }, 800);
-        });
+        if(mobileLogo) {
+            mobileLogo.addEventListener('click', function() {
+                if (this.classList.contains('purring')) return; 
+                this.classList.add('purring');
+                if (navigator.vibrate) { navigator.vibrate([50, 50, 50, 50, 50, 50]); }
+                setTimeout(() => { this.classList.remove('purring'); }, 800);
+            });
+        }
 
         // --- ЛОГИКА КАСТОМНЫХ ВЫПАДАЮЩИХ СПИСКОВ ---
         document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
@@ -442,7 +423,6 @@
                     e.stopPropagation();
                     trigger.textContent = option.textContent; 
                     hiddenInput.value = option.getAttribute('data-value'); 
-                    
                     options.forEach(opt => opt.classList.remove('selected'));
                     option.classList.add('selected');
                     select.classList.remove('open');
@@ -456,8 +436,21 @@
             });
         });
 
+        // --- ДИНАМИЧЕСКИЙ КУРС ИЗ URL ---
+        let RATE = 93.50; 
+        const urlParams = new URLSearchParams(window.location.search);
+        const rateParam = urlParams.get('rate');
+
+        if (rateParam && !isNaN(parseFloat(rateParam))) {
+            RATE = parseFloat(rateParam);
+        }
+
+        const courseBadge = document.getElementById('course-badge');
+        if(courseBadge) {
+            courseBadge.textContent = `Курс: 1 USDT = ${RATE} RUB`;
+        }
+
         // --- КАЛЬКУЛЯТОР КУРСА ---
-        const RATE = 93.50;
         const giveInput = document.getElementById('give-input');
         const getInput = document.getElementById('get-input');
 
@@ -469,8 +462,11 @@
                 getInput.value = '0';
             }
         });
+
+        // Инициируем расчет при загрузке
+        giveInput.dispatchEvent(new Event('input'));
         
-        // --- ОТПРАВКА ДАННЫХ В TELEGRAM БОТА ---
+        // --- ОТПРАВКА ДАННЫХ В TELEGRAM БОТА И ЭКРАН УСПЕХА ---
         const tg = window.Telegram.WebApp;
         tg.expand();
         
@@ -482,7 +478,15 @@
                 network: document.getElementById('crypto-network').value, 
                 bank: document.getElementById('fiat-bank').value 
             };
-            tg.sendData(JSON.stringify(orderData));
+            
+            // Показываем сообщение об успехе
+            const successOverlay = document.getElementById('success-overlay');
+            successOverlay.classList.add('active');
+
+            // Отправляем данные через 2 секунды
+            setTimeout(() => {
+                tg.sendData(JSON.stringify(orderData));
+            }, 2000);
         });
     </script>
 </body>
