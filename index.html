@@ -150,7 +150,7 @@
         .input-header { display: flex; justify-content: space-between; font-size: 15px; font-weight: 700; color: #64748b; margin-bottom: 10px; }
         .input-row { display: flex; justify-content: space-between; align-items: center; position: relative; }
 
-        input[type="number"], input[type="text"] {
+        input[type="number"] {
             border: none; background: transparent; font-size: 30px; font-weight: 900; color: var(--text-main); width: 45%; outline: none;
         }
 
@@ -249,7 +249,7 @@
             .exchange-container { padding: 25px; border-radius: 35px; }
             .success-overlay { border-radius: 35px; }
             .input-group { padding: 15px; border-radius: 20px; }
-            input[type="number"], input[type="text"] { font-size: 24px; width: 45%; }
+            input[type="number"] { font-size: 24px; width: 45%; }
             .custom-select-wrapper { width: 120px; }
             .custom-select-trigger { padding: 8px 25px 8px 10px; font-size: 13px; }
 
@@ -302,14 +302,14 @@
                         <input type="number" value="100" id="give-input">
                         <div class="custom-select-wrapper">
                             <div class="custom-select">
-                                <span class="custom-select-trigger">TRC-20</span>
+                                <span class="custom-select-trigger">Bybit</span>
                                 <div class="custom-options">
-                                    <span class="custom-option selected" data-value="trc20">TRC-20</span>
-                                    <span class="custom-option" data-value="erc20">ERC-20</span>
-                                    <span class="custom-option" data-value="bep20">BEP-20</span>
+                                    <span class="custom-option selected" data-value="Bybit">Bybit</span>
+                                    <span class="custom-option" data-value="Mexc">Mexc</span>
+                                    <span class="custom-option" data-value="HTX">HTX</span>
                                 </div>
                             </div>
-                            <input type="hidden" id="crypto-network" value="trc20">
+                            <input type="hidden" id="exchange-select" value="Bybit">
                         </div>
                     </div>
                 </div>
@@ -321,24 +321,12 @@
                 <div class="input-group">
                     <div class="input-header"><span>Вы получаете (RUB)</span></div>
                     <div class="input-row">
-                        <input type="text" value="9350" id="get-input" readonly>
-                        <div class="custom-select-wrapper">
-                            <div class="custom-select">
-                                <span class="custom-select-trigger">Т-Банк</span>
-                                <div class="custom-options">
-                                    <span class="custom-option selected" data-value="tbank">Т-Банк</span>
-                                    <span class="custom-option" data-value="sber">Сбербанк</span>
-                                    <span class="custom-option" data-value="sbp">СБП</span>
-                                </div>
-                            </div>
-                            <input type="hidden" id="fiat-bank" value="tbank">
-                        </div>
+                        <input type="number" value="9350" id="get-input" style="width: 100%;">
                     </div>
                 </div>
 
                 <button class="submit-btn" id="submit-order">Перейти к оплате</button>
 
-                <!-- Экран успешной заявки -->
                 <div class="success-overlay" id="success-overlay">
                     <div class="success-icon">✅</div>
                     <div class="success-text">Заявка создана!<br><span style="font-size: 16px; color: #666; font-weight: 700;">Возвращаем в Telegram...</span></div>
@@ -450,16 +438,27 @@
             courseBadge.textContent = `Курс: 1 USDT = ${RATE} RUB`;
         }
 
-        // --- КАЛЬКУЛЯТОР КУРСА ---
+        // --- ДВУСТОРОННИЙ КАЛЬКУЛЯТОР КУРСА ---
         const giveInput = document.getElementById('give-input');
         const getInput = document.getElementById('get-input');
 
+        // Если вводим USDT -> считаем рубли
         giveInput.addEventListener('input', function() {
             const val = parseFloat(this.value);
             if (!isNaN(val)) {
-                getInput.value = Math.floor(val * RATE);
+                getInput.value = (val * RATE).toFixed(2);
             } else {
-                getInput.value = '0';
+                getInput.value = '';
+            }
+        });
+
+        // Если вводим рубли -> считаем USDT
+        getInput.addEventListener('input', function() {
+            const val = parseFloat(this.value);
+            if (!isNaN(val)) {
+                giveInput.value = (val / RATE).toFixed(2);
+            } else {
+                giveInput.value = '';
             }
         });
 
@@ -475,8 +474,7 @@
                 action: 'create_order',
                 give: document.getElementById('give-input').value,
                 get: document.getElementById('get-input').value,
-                network: document.getElementById('crypto-network').value, 
-                bank: document.getElementById('fiat-bank').value 
+                exchange: document.getElementById('exchange-select').value 
             };
             
             // Показываем сообщение об успехе
